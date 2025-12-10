@@ -19,6 +19,8 @@ This project investigates the gap between public perception of crime and actual 
 * **Figma:** Designed the dashboard layout, background, and typography hierarchy.
 
 ## 📂 File Structure
-* `data_transformation_logic.txt`: [**Click here to view the Power Query code**](./data_transformation_logic.txt) used to clean and transform the raw data.
+* `data_transformation_logic.txt`: [**View the Power Query code**](./data_transformation_logic.txt) used to clean and transform the raw data.
 * `crime_data_cleaned.csv`: [**View the clean dataset**](./crime_data_cleaned.csv) used to generate the visualizations.
-* `screenshots`: High-resolution images of the interactive dashboard.
+* `Crime_Analysis_Report.pdf`: [**Read the full research paper**](./Crime_Analysis_Report.pdf) detailing the methodology, extended findings, and demographic context.
+* `Dashboard_Full_Export.pdf`: [**Download the high-res dashboard**](./Dashboard_Full_Export.pdf) to see all visual details.
+* `screenshots/`: Folder containing quick-view images for this README.
