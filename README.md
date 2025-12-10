@@ -19,6 +19,6 @@ This project investigates the gap between public perception of crime and actual 
 * **Figma:** Designed the dashboard layout, background, and typography hierarchy.
 
 ## 📂 File Structure
-* `data_transformation_logic.m`: The full Power Query (M) script used to clean and transform the raw data.
-* `crime_data_cleaned.csv`: The final processed dataset used to generate the visualizations.
+* `data_transformation_logic.txt`: [**Click here to view the Power Query code**](./data_transformation_logic.txt) used to clean and transform the raw data.
+* `crime_data_cleaned.csv`: [**View the clean dataset**](./crime_data_cleaned.csv) used to generate the visualizations.
 * `screenshots`: High-resolution images of the interactive dashboard.
