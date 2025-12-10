@@ -1,0 +1,13 @@
+"// Overall Increased Crime
+let
+  Source = Csv.Document(Web.Contents(""https://umich-my.sharepoint.com/personal/mcostner_umich_edu/Documents/Apps/Microsoft Power Query/Uploaded Files/data-bRhaW (1).csv""), [Delimiter = "","", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+  #""Promoted headers"" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+  #""Renamed columns"" = Table.RenameColumns(#""Promoted headers"", {{""X.1"", ""Dates""}, {""More"", ""Believe More Crime""}, {""Less"", ""Believe Less Crime""}, {""Same (vol.)"", ""Believe Same Crime""}}),
+  #""Removed columns"" = Table.RemoveColumns(#""Renamed columns"", {""No opinion""}),
+  #""Changed column type"" = Table.TransformColumnTypes(#""Removed columns"", {{""Believe More Crime"", Int64.Type}, {""Believe Less Crime"", Int64.Type}, {""Believe Same Crime"", Int64.Type}}),
+  #""Filtered rows"" = Table.SelectRows(#""Changed column type"", each ([Dates] <> """")),
+  #""Sorted rows"" = Table.Sort(#""Filtered rows"", {{""Dates"", Order.Ascending}}),
+  #""Renamed columns 1"" = Table.RenameColumns(#""Sorted rows"", {{""Believe Same Crime"", ""Believe Crime Rates Haven't Changed""}, {""Believe More Crime"", ""Believe Crime Rates Have Risen""}, {""Believe Less Crime"", ""Believe Crime Rates Have Fallen""}, {""Dates"", ""Year""}}),
+  #""Inserted Text Before Delimiter"" = Table.AddColumn(#""Renamed columns 1"", ""Cleaned Year"", each Text.BeforeDelimiter([Year], "" ""), type text)
+in
+  #""Inserted Text Before Delimiter"""

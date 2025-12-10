@@ -1,0 +1,82 @@
+﻿// Table: Overall Increased Crime
+let
+    Source = Csv.Document(Web.Contents("https://umich-my.sharepoint.com/personal/mcostner_umich_edu/Documents/Apps/Microsoft Power Query/Uploaded Files/data-bRhaW (1).csv"), [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+    #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    #"Renamed columns" = Table.RenameColumns(#"Promoted headers", {{"X.1", "Dates"}, {"More", "Believe More Crime"}, {"Less", "Believe Less Crime"}, {"Same (vol.)", "Believe Same Crime"}}),
+    #"Removed columns" = Table.RemoveColumns(#"Renamed columns", {"No opinion"}),
+    #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"Believe More Crime", Int64.Type}, {"Believe Less Crime", Int64.Type}, {"Believe Same Crime", Int64.Type}}),
+    #"Filtered rows" = Table.SelectRows(#"Changed column type", each ([Dates] <> "")),
+    #"Sorted rows" = Table.Sort(#"Filtered rows", {{"Dates", Order.Ascending}}),
+    #"Renamed columns 1" = Table.RenameColumns(#"Sorted rows", {{"Believe Same Crime", "Believe Crime Rates Haven't Changed"}, {"Believe More Crime", "Believe Crime Rates Have Risen"}, {"Believe Less Crime", "Believe Crime Rates Have Fallen"}, {"Dates", "Year"}}),
+    #"Inserted Text Before Delimiter" = Table.AddColumn(#"Renamed columns 1", "Cleaned Year", each Text.BeforeDelimiter([Year], " "), type text)
+in
+    #"Inserted Text Before Delimiter"
+
+
+// Table: Drug Equipment Violations Offender 
+let
+    Source = Csv.Document(Web.Contents("https://umich-my.sharepoint.com/personal/mcostner_umich_edu/Documents/Apps/Microsoft Power Query/Uploaded Files/Offender ethnicity_11-29-2025 (1).csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+    #"Filtered rows" = Table.SelectRows(Source, each ([Column1] = "Hispanic or Latino" or [Column1] = "Not Hispanic or Latino")),
+    #"Changed column type" = Table.TransformColumnTypes(#"Filtered rows", {{"Column2", Int64.Type}}),
+    #"Renamed columns" = Table.RenameColumns(#"Changed column type", {{"Column1", "Demographic"}, {"Column2", "Count"}}),
+    #"Added custom" = Table.AddColumn(#"Renamed columns", "Crime Type", each "Drug Equipment Violation")
+in
+    #"Added custom"
+
+
+// Table: Drug/Narcotic Violations Offender 
+let
+    Source = Csv.Document(Web.Contents("https://umich-my.sharepoint.com/personal/mcostner_umich_edu/Documents/Apps/Microsoft Power Query/Uploaded Files/Offender ethnicity_11-29-2025 (2).csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+    #"Filtered rows" = Table.SelectRows(Source, each ([Column1] = "Hispanic or Latino" or [Column1] = "Not Hispanic or Latino")),
+    #"Changed column type" = Table.TransformColumnTypes(#"Filtered rows", {{"Column2", Int64.Type}}),
+    #"Renamed columns" = Table.RenameColumns(#"Changed column type", {{"Column1", "Demographic"}, {"Column2", "Count"}}),
+    #"Added custom" = Table.AddColumn(#"Renamed columns", "Crime Type", each "Drug/Narcotic Violation")
+in
+    #"Added custom"
+
+
+// Table: Federal Liquor Offenses Offender
+let
+    Source = Csv.Document(Web.Contents("https://umich-my.sharepoint.com/personal/mcostner_umich_edu/Documents/Apps/Microsoft Power Query/Uploaded Files/Offender ethnicity_11-29-2025 (3).csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+    #"Filtered rows" = Table.SelectRows(Source, each ([Column1] = "Hispanic or Latino" or [Column1] = "Not Hispanic or Latino")),
+    #"Changed column type" = Table.TransformColumnTypes(#"Filtered rows", {{"Column2", Int64.Type}}),
+    #"Renamed columns" = Table.RenameColumns(#"Changed column type", {{"Column1", "Demographic"}, {"Column2", "Count"}}),
+    #"Added custom" = Table.AddColumn(#"Renamed columns", "Crime Type", each "Federal Liquor Offense")
+in
+    #"Added custom"
+
+
+// Table: Federal Tobacco Offenses Offender
+let
+    Source = Csv.Document(Web.Contents("https://umich-my.sharepoint.com/personal/mcostner_umich_edu/Documents/Apps/Microsoft Power Query/Uploaded Files/Offender ethnicity_11-29-2025 (4).csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+    #"Filtered rows" = Table.SelectRows(Source, each ([Column1] = "Hispanic or Latino" or [Column1] = "Not Hispanic or Latino")),
+    #"Changed column type" = Table.TransformColumnTypes(#"Filtered rows", {{"Column2", Int64.Type}}),
+    #"Renamed columns" = Table.RenameColumns(#"Changed column type", {{"Column1", "Demographic"}, {"Column2", "Count"}}),
+    #"Added custom" = Table.AddColumn(#"Renamed columns", "Crime Type", each "Federal Tobacco Offense")
+in
+    #"Added custom"
+
+
+// Table: Illegal Entry Into the United States Offender
+let
+    Source = Csv.Document(Web.Contents("https://umich-my.sharepoint.com/personal/mcostner_umich_edu/Documents/Apps/Microsoft Power Query/Uploaded Files/Offender ethnicity_11-29-2025 (5).csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+    #"Filtered rows" = Table.SelectRows(Source, each ([Column1] = "Hispanic or Latino" or [Column1] = "Not Hispanic or Latino")),
+    #"Changed column type" = Table.TransformColumnTypes(#"Filtered rows", {{"Column2", Int64.Type}}),
+    #"Renamed columns" = Table.RenameColumns(#"Changed column type", {{"Column1", "Demographic"}, {"Column2", "Count"}})
+in
+    #"Renamed columns"
+
+
+// Table: Master Crime Data
+let
+    Source = Table.Combine({#"Drug Equipment Violations Offender", #"Drug/Narcotic Violations Offender", #"Federal Liquor Offenses Offender", #"Federal Tobacco Offenses Offender"})
+in
+    Source
+
+
+// Table: Key Cards
+let
+    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCsgvKM1JLMnMz1PSUTK0BBIemcUFiXmZyQpIUrE60UrORZm5qUB5c2Q1YEGFoMSSVLAa98QCkDFGQCI0LyW1qCi1oCi1ODWvJDVFIalSKTYWAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Stat = _t, Value = _t, Label = _t]),
+    #"Changed column type" = Table.TransformColumnTypes(Source, {{"Value", Int64.Type}})
+in
+    #"Changed column type"
